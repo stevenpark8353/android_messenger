@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/group1">
+        <item
+        android:id="@+id/nav_write"
+        android:icon="@drawable/ic_write_gray_24dp"
+        android:title="메시지 작성" />
+    <item
+        android:id="@+id/nav_message"
+        android:icon="@drawable/ic_message_gray_24dp"
+        android:title="받은 메시지 함" />
+</group>
+
+<group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings_gray_24dp"
+            android:title="개인 정보 설정" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout_gray_24dp"
+            android:title="로그아웃" />
+        <item
+            android:id="@+id/nav_hidden"
+            android:icon="@drawable/ic_settings_gray_24dp"
+            android:visible="false"
+            android:title="hidden" />
+    </group>
+</menu>
+
