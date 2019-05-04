@@ -79,7 +79,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void checkClick(View v) {
         for (Person p : persons) {
-            if (p.getId().equals(edit_id.getText().toString())) {
+            String id = edit_id.getText().toString();
+            if (p.getId().equals(id)) {
                 Toast.makeText(SignUpActivity.this, "이미 존재하는 아이디입니다!", Toast.LENGTH_SHORT).show();
                 break;
             } else {

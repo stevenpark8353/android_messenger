@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // DB를 관리하기 위한 변수
     PersonDAO personDAO;
-    ArrayList<Person> persons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         // 데이터베이스 테이블 생성을 위한 변수
         personDAO = new PersonDAO();
-        persons = personDAO.getAllPerson();
+//        persons = personDAO.getAllPerson();
         Log.d("test123", "loginActivity가져왔다");
 
         edit_id = (EditText) findViewById(R.id.edit_id); // 로그인창에서 EditText의 edit_id 부분
@@ -97,7 +96,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 boolean hasPerson = false;
-                for (Person p : persons) {
+
+                for (Person p : personDAO.getAllPerson()) {
                     String id = edit_id.getText().toString();
                     String pw = edit_pw.getText().toString();
                     Log.d("test123", id + ":" + p.getId() + ", " + pw + ":" + p.getPassword());
@@ -147,7 +147,6 @@ public class LoginActivity extends AppCompatActivity {
                     person = (Person) intent.getSerializableExtra("PersonOut");
                     tempId = person.getId();
                     tempPw = person.getPassword();
-                    persons.add(person);
                     break;
                 } else {
                     Toast.makeText(LoginActivity.this, "무엇이 잘못됬나요?", Toast.LENGTH_SHORT).show();

@@ -47,7 +47,6 @@
             android:id="@+id/message_receiver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="bbb"
             android:textSize="15sp" />
 
 

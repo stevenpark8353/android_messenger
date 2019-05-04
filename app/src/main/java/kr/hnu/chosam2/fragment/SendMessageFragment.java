@@ -28,7 +28,7 @@ public class SendMessageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_send_message, container, false);
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_send_message, container, false);
 
         Button btnSend = (Button) rootView.findViewById(R.id.btnSend);
         Button btnCancel = (Button) rootView.findViewById(R.id.btnCancel);
@@ -54,7 +54,7 @@ public class SendMessageFragment extends Fragment {
                 String date = Utils.getDate();
                 Message message = new Message(sender, receiver, title, contents, date);
                 messageDAO.addMessage(message);
-                mainActivity.inflateListView();
+                mainActivity.switchFragment(R.id.nav_message);
                 getFragmentManager().popBackStack();
             }
         });
