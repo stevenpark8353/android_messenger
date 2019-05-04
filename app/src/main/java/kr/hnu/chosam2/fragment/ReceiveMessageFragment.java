@@ -1,4 +1,4 @@
-package kr.hnu.chosam2.navigationtest01;
+package kr.hnu.chosam2.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class EditFragment extends Fragment {
-    public static final String TAG = "EditFragment";
+import kr.hnu.chosam2.navigationtest01.R;
+
+public class ReceiveMessageFragment extends Fragment {
+    public static final String TAG = "ReceiveMessageFragment";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activity_edit, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_receive_message, container, false);
         return rootView;
     }
+
 }

@@ -1,4 +1,4 @@
-package kr.hnu.chosam2.navigationtest01;
+package kr.hnu.chosam2.activity;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -12,8 +12,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import kr.hnu.chosam2.navigationtest01.R;
+import kr.hnu.chosam2.obj.Person;
 import kr.hnu.chosam2.sql.PersonDAO;
-import kr.hnu.chosam2.sql.WordDBHelper;
 
 public class SignUpActivity extends AppCompatActivity {
 

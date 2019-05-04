@@ -1,4 +1,4 @@
-package kr.hnu.chosam2.navigationtest01;
+package kr.hnu.chosam2.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,18 +6,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
+import kr.hnu.chosam2.navigationtest01.R;
+import kr.hnu.chosam2.obj.Person;
 import kr.hnu.chosam2.sql.PersonDAO;
-import kr.hnu.chosam2.sql.WordDBHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         // 데이터베이스 테이블 생성을 위한 변수
         personDAO = new PersonDAO();
         persons = personDAO.getAllPerson();

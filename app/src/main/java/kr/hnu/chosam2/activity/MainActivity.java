@@ -1,4 +1,4 @@
-package kr.hnu.chosam2.navigationtest01;
+package kr.hnu.chosam2.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,52 +31,35 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kr.hnu.chosam2.fragment.EditFragment;
+import kr.hnu.chosam2.fragment.MessageDetailFragment;
+import kr.hnu.chosam2.fragment.SendMessageFragment;
+import kr.hnu.chosam2.navigationtest01.R;
+import kr.hnu.chosam2.obj.Message;
 import kr.hnu.chosam2.sql.MessageDAO;
+import kr.hnu.chosam2.util.Utils;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "MainActivity";
 //    ArrayList<HashMap<String, Object>> arItem; // list추가!
     Menu menu;
     SimpleAdapter sAdapter;
-    String userId;
+    private String userId;
     // Fragment를 위해 추가합니다
     LinearLayout firstContainer, fragmentContainer;
 
-    ///////////////////////////
-    // Intent를 받기 위해서 추가
+
     EditText edit_id, edit_pw;
 
     TextView name;
     TextView title;
     MessageDAO messageDAO;
 
-    ////////////////
-
-    public void inflateListView() {
-        Log.d(TAG, "inflateView started");
-
-        List<HashMap<String, Object>> arItem = new ArrayList<HashMap<String, Object>>();
-        List<Message> messages = messageDAO.getAllMessage();
-
-        for (Message message : messages) {
-            Log.d(TAG, "message title: " + message);
-            arItem.add(putItem(R.drawable.ic_email_red, message.getSender(), message.getTitle(), message.getToday()));
-        }
-
-        String[] from = {"icon", "writer", "title", "date"};
-        int[] to = {R.id.img, R.id.writer, R.id.title, R.id.date};
-        sAdapter = new SimpleAdapter(this, arItem, R.layout.listitem, from, to);
-
-        ListView myList = (ListView) findViewById(R.id.list);
-
-        myList.setAdapter(sAdapter);
-        myList.setOnItemClickListener(mItemClickListener);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        Utils.hideSoftKeyboard(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("받은 메시지 함");
@@ -116,12 +100,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     ////////////////////////////////////////// List용 코드 추가
-    private HashMap<String, Object> putItem(int icon, String name, String title, String date) {
-        HashMap<String, Object> item = new HashMap<String, Object>();
-        item.put("icon", icon);
-        item.put("writer", name);
-        item.put("title", title);
-        item.put("date", date);
+    private Map<String, Object> putItem(Message message) {
+        Map<String, Object> item = new HashMap<String, Object>();
+        item.put("writer", message.getSender());
+        item.put("title", message.getTitle());
+        item.put("date", message.getDate());
+        item.put("message", message);
         return item;
     }
 
@@ -132,25 +116,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            Toast.makeText(MainActivity.this, mes, Toast.LENGTH_SHORT).show();
 
             Map<String, Object> map = (Map<String, Object>) parent.getItemAtPosition(position);
-            Intent intent = new Intent(MainActivity.this, ReceiveActivity.class);
-
-            intent.putExtra("writer", (String) map.get("writer"));
-            intent.putExtra("title", (String) map.get("title"));
-            intent.putExtra("date", (String) map.get("date"));
-
+            Message message = (Message) map.get("message");
 
             Bundle bundle = new Bundle();
+//            bundle.putString("writer", (String) map.get("writer"));
+//            bundle.putString("title", (String) map.get("title"));
+//            bundle.putString("date", (String) map.get("date"));
+//            bundle.putString("date", (String) map.get("contents"));
 
-            bundle.putString("writer", (String) map.get("writer"));
-            bundle.putString("title", (String) map.get("title"));
-            bundle.putString("date", (String) map.get("date"));
+            bundle.putSerializable("message", message);
 
-            Fragment fragment = new ReceiveFragment();
+            Fragment fragment = new MessageDetailFragment();
             fragment.setArguments(bundle);
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragmentContainer, fragment);
-            fragmentTransaction.addToBackStack(ReceiveFragment.TAG);
+            fragmentTransaction.addToBackStack(MessageDetailFragment.TAG);
             fragmentTransaction.commit();
             getSupportActionBar().setTitle("메시지 작성");
         }
@@ -171,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -212,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tag = EditFragment.TAG;
             getSupportActionBar().setTitle("개인 정보 설정");
         } else if (id == R.id.nav_logout) {
-
+            this.finish();
         }
 
         if (fragment != null) {
@@ -231,5 +212,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (resultCode == 12321) {
             Log.d(TAG, "result code: " + resultCode);
         }
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void inflateListView() {
+        Log.d(TAG, "inflateView started");
+
+        List<Map<String, Object>> arItem = new ArrayList<Map<String, Object>>();
+
+        for (Message message : messageDAO.getAllMessage()) {
+            arItem.add(putItem(message));
+        }
+
+        String[] from = {"icon", "writer", "title", "date"};
+        int[] to = {R.id.img, R.id.writer, R.id.title, R.id.date};
+        sAdapter = new SimpleAdapter(this, arItem, R.layout.listitem, from, to);
+
+        ListView myList = (ListView) findViewById(R.id.list);
+
+        myList.setAdapter(sAdapter);
+        myList.setOnItemClickListener(mItemClickListener);
     }
 }

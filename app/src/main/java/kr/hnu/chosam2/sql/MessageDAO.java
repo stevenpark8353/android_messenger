@@ -7,7 +7,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import kr.hnu.chosam2.navigationtest01.Message;
+import kr.hnu.chosam2.obj.Message;
 
 public class MessageDAO {
     public static final String TAG = "MessageDAO";
@@ -24,7 +24,7 @@ public class MessageDAO {
         values.put("receiver", msg.getReceiver());
         values.put("title", msg.getTitle());
         values.put("contents", msg.getContents());
-        values.put("today", msg.getToday());
+        values.put("today", msg.getDate());
         db.insert("tb_message", null, values);
     }
 
@@ -37,19 +37,15 @@ public class MessageDAO {
         //Log.d("test123", cursor.getCount() + "");
 
         while (cursor.moveToNext()) {
-            Message msg = new Message();
             int id = cursor.getInt(0);
-            Log.d(TAG, "id: " + id);
-            msg.setId(id);
-            msg.setSender(cursor.getString(1));
-            msg.setReceiver(cursor.getString(2));
-            msg.setTitle(cursor.getString(3));
-            msg.setContents(cursor.getString(4));
-            msg.setToday(cursor.getString(5));
-            msgList.add(msg);
-            Log.d("test123", msg.toString());
+            String sender = cursor.getString(1);
+            String receiver = cursor.getString(2);
+            String title = cursor.getString(3);
+            String contents = cursor.getString(4);
+            String date = cursor.getString(5);
+            Message message = new Message(id, sender, receiver, title, contents, date);
+            msgList.add(message);
         }
-
         return msgList;
     }
 }

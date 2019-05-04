@@ -7,8 +7,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import kr.hnu.chosam2.navigationtest01.Message;
-import kr.hnu.chosam2.navigationtest01.Person;
+import kr.hnu.chosam2.obj.Person;
 
 public class PersonDAO {
     SQLiteDatabase db;

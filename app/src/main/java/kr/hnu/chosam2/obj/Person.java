@@ -1,4 +1,4 @@
-package kr.hnu.chosam2.navigationtest01;
+package kr.hnu.chosam2.obj;
 
 import android.util.Log;
 

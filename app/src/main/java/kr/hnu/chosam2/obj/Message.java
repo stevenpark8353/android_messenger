@@ -1,7 +1,6 @@
-package kr.hnu.chosam2.navigationtest01;
+package kr.hnu.chosam2.obj;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 public class Message implements Serializable {
     int id;
@@ -11,8 +10,13 @@ public class Message implements Serializable {
     String contents;
     String today;
 
-    public Message() {
-
+    public Message(int id, String sender, String receiver, String title, String contents, String today) {
+        this.id  = id;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.title = title;
+        this.contents = contents;
+        this.today = today;
     }
 
     public Message(String sender, String receiver, String title, String contents, String today) {
@@ -55,7 +59,7 @@ public class Message implements Serializable {
         this.contents = contents;
     }
 
-    public String getToday() {
+    public String getDate() {
         return today;
     }
 
